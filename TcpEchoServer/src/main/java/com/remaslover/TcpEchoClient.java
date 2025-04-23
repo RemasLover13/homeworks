@@ -7,8 +7,11 @@ import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.logging.Logger;
 
 public class TcpEchoClient {
+    private static final Logger log = Logger.getLogger(TcpEchoClient.class.getName());
+
     public static void main(String[] args) {
         try (SocketChannel socketChannel = SocketChannel.open()) {
             socketChannel.connect(new InetSocketAddress("127.0.0.1", 7));
@@ -28,7 +31,7 @@ public class TcpEchoClient {
                     int bytesRead = socketChannel.read(buffer);
 
                     if (bytesRead == -1) {
-                        System.err.println("Сервер закрыл подключение");
+                        log.severe("Сервер закрыл подключение");
                         break;
                     }
 
@@ -44,10 +47,10 @@ public class TcpEchoClient {
                     }
                 }
             } catch (IOException e) {
-                System.err.println("Ошибка чтения из консоли: " + e.getMessage());
+                log.severe("Ошибка чтения из консоли: " + e.getMessage());
             }
         } catch (IOException e) {
-            System.err.println("Ошибка подключения к серверу: " + e.getMessage());
+            log.severe("Ошибка подключения к серверу: " + e.getMessage());
         }
     }
 }

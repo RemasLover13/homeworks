@@ -7,6 +7,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 public class TcpEchoServer {
 
@@ -14,6 +15,7 @@ public class TcpEchoServer {
     private static final int PORT = 7;
     private static final int THREAD_COUNT = 4;
     private static final ExecutorService threadPool = Executors.newFixedThreadPool(THREAD_COUNT);
+    private static final Logger log = Logger.getLogger(TcpEchoServer.class.getName());
 
     public static void main(String[] args) {
         try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
@@ -44,15 +46,15 @@ public class TcpEchoServer {
                                 System.out.println("Сообщение отправлено клиенту");
                             }
                         } catch (IOException e) {
-                            System.err.println("Ошибка обработки клиента: " + e.getMessage());
+                            log.severe("Ошибка обработки клиента: " + e.getMessage());
                         }
                     });
                 } catch (IOException e) {
-                    System.err.println("Ошибка подключения клиента: " + e.getMessage());
+                    log.severe("Ошибка подключения клиента: " + e.getMessage());
                 }
             }
         } catch (IOException e) {
-            System.err.println("Ошибка запуска сервера: " + e.getMessage());
+            log.severe("Ошибка запуска сервера: " + e.getMessage());
         } finally {
             threadPool.shutdown();
         }
