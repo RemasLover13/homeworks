@@ -35,7 +35,7 @@ public class RingBuffer<T> {
     }
 
     public T poll() {
-        lock.readLock().lock();
+        lock.writeLock().lock();
         try {
             boolean isEmpty = writeSequence.get() < readSequence.get();
             if (!isEmpty) {
@@ -45,7 +45,7 @@ public class RingBuffer<T> {
             }
             return null;
         } finally {
-            lock.readLock().unlock();
+            lock.writeLock().unlock();
         }
     }
 
